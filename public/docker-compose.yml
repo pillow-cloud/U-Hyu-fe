@@ -1,0 +1,14 @@
+services:
+  uhyu-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: "https://uhyu-api.pillow12360.world"
+        VITE_KAKAO_JS_KEY: "4985203a6ae35f0c5db7d25206ec092b"
+        VITE_KAKAO_LOGIN_URL: "https://uhyu-api.pillow12360.world/oauth2/authorization/kakao?role=ROLE_USER"
+        VITE_USE_MSW: "false"
+    container_name: uhyu-frontend
+    ports:
+      - "5173:80"
+    restart: always
