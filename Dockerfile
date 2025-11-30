@@ -11,11 +11,11 @@ RUN yarn install --frozen-lockfile
 COPY . .
 
 # ====== Vite 환경 변수 (빌드 시점) ======
-ARG VITE_API_URL=https://uhyu-api.pillow12360.world
-ARG VITE_KAKAO_JS_KEY=4985203a6ae35f0c5db7d25206ec092b
-ARG VITE_KAKAO_JAVASCRIPT_KEY=4985203a6ae35f0c5db7d25206ec092b
-ARG VITE_KAKAO_REST_API_KEY=53a3872100096cdf985756a17ffb1634
-ARG VITE_KAKAO_LOGIN_URL=https://uhyu-api.pillow12360.world/oauth2/authorization/kakao?role=ROLE_USER
+ARG VITE_API_URL
+ARG VITE_KAKAO_JS_KEY
+ARG VITE_KAKAO_JAVASCRIPT_KEY
+ARG VITE_KAKAO_REST_API_KEY
+ARG VITE_KAKAO_LOGIN_URL
 ARG VITE_USE_MSW=false
 
 # Vite는 process.env.VITE_* 를 읽기 때문에 빌드할 때 ENV로 넣어두면 됨
