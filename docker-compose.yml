@@ -1,15 +1,6 @@
 services:
   uhyu-frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        VITE_API_URL: "${VITE_API_URL}"
-        VITE_KAKAO_JS_KEY: "${VITE_KAKAO_JS_KEY}"
-        VITE_KAKAO_JAVASCRIPT_KEY: "${VITE_KAKAO_JAVASCRIPT_KEY}"
-        VITE_KAKAO_REST_API_KEY: "${VITE_KAKAO_REST_API_KEY}"
-        VITE_KAKAO_LOGIN_URL: "${VITE_KAKAO_LOGIN_URL}"
-        VITE_USE_MSW: "${VITE_USE_MSW}"
+    image: localhost:5000/u-hyu-fe:latest
     container_name: uhyu-frontend
     ports:
       - "5173:80"
