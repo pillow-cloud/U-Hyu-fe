@@ -16,26 +16,28 @@ jobs:
       compose_file: "./docker-compose.yml"
       image_tag: "latest"
 
-      build_args:
-        VITE_API_URL: "https://uhyu-api.pillow12360.world"
-        VITE_KAKAO_LOGIN_URL: "https://uhyu-api.pillow12360.world/oauth2/authorization/kakao?role=ROLE_USER"
+      build_args: |
+        {
+          "VITE_API_URL": "https://uhyu-api.pillow12360.world",
+          "VITE_KAKAO_LOGIN_URL": "https://uhyu-api.pillow12360.world/oauth2/authorization/kakao?role=ROLE_USER",
 
-        VITE_KAKAO_JS_KEY: "4985203a6ae35f0c5db7d25206ec092b"
-        VITE_KAKAO_JAVASCRIPT_KEY: "4985203a6ae35f0c5db7d25206ec092b"
+          "VITE_KAKAO_JS_KEY": "4985203a6ae35f0c5db7d25206ec092b",
+          "VITE_KAKAO_JAVASCRIPT_KEY": "4985203a6ae35f0c5db7d25206ec092b",
 
-        VITE_MAP_INITIAL_LNG: "127.04980263250734"
-        VITE_MAP_INITIAL_LAT: "37.503320984596634"
+          "VITE_MAP_INITIAL_LNG": "127.04980263250734",
+          "VITE_MAP_INITIAL_LAT": "37.503320984596634",
 
-        VITE_DEFAULT_RADIUS: "2000"
-        VITE_SEARCH_DISTANCE_THRESHOLD: "1500"
-        VITE_RECOMMEND_RADIUS: "5000"
-        VITE_SEARCH_DEBOUNCE_DELAY: "300"
+          "VITE_DEFAULT_RADIUS": "2000",
+          "VITE_SEARCH_DISTANCE_THRESHOLD": "1500",
+          "VITE_RECOMMEND_RADIUS": "5000",
+          "VITE_SEARCH_DEBOUNCE_DELAY": "300",
 
-        VITE_USE_MSW: "false"
-        VITE_DEV_USER_ENABLED: "false"
-        VITE_CLUSTER_MIN_LEVEL: "5"
+          "VITE_USE_MSW": "false",
+          "VITE_DEV_USER_ENABLED": "false",
+          "VITE_CLUSTER_MIN_LEVEL": "5",
 
-        VITE_GA_MEASUREMENT_ID: "G-ED1ZRPVQSM"
+          "VITE_GA_MEASUREMENT_ID": "G-ED1ZRPVQSM"
+        }
 
     secrets:
       DOCKER_REGISTRY_USERNAME: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
