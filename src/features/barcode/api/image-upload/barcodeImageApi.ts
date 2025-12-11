@@ -14,6 +14,7 @@ export const postUploadBarcodeImage = async (file: File): Promise<string> => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      withCredentials: true,
     }
   );
   return res.data.data!;
@@ -36,6 +37,7 @@ export const patchBarcodeImage = async (file: File): Promise<string> => {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
+      withCredentials: true,
     }
   );
   return res.data.data!;
