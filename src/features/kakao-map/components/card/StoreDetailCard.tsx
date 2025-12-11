@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import type { StoreBenefit } from '../../api/types';
 
 export interface StoreDetailCardProps {
-  storeName: string;
+  storeName: string | null;
   isFavorite: boolean;
-  favoriteCount: number;
-  benefits: StoreBenefit;
-  usageLimit: string;
-  usageMethod: string;
+  favoriteCount: number | null;
+  benefits: StoreBenefit | null;
+  usageLimit: string | null;
+  usageMethod: string | null;
   handleToggleFavorite?: () => void;
 }
 
@@ -18,11 +18,13 @@ const TEXT_LIMITS = {
   usageMethod: 40,
 };
 
-const shouldShowExpand = (text: string, limit: number): boolean => {
+const shouldShowExpand = (text: string | null | undefined, limit: number): boolean => {
+  if (!text) return false;
   return text.length > limit;
 };
 
-const getTruncatedText = (text: string, limit: number): string => {
+const getTruncatedText = (text: string | null | undefined, limit: number): string => {
+  if (!text) return '';
   if (text.length <= limit) return text;
   return text.substring(0, limit) + '...';
 };
@@ -136,7 +138,7 @@ const StoreDetailCard: React.FC<StoreDetailCardProps> = ({
                 e.stopPropagation();
               }}
             >
-              {storeName}
+              {storeName || ''}
             </span>
             <div className="flex items-center gap-1">
               <div
@@ -183,9 +185,9 @@ const StoreDetailCard: React.FC<StoreDetailCardProps> = ({
               </div>
 
               <span className="text-xs text-gray-500">
-                {favoriteCount >= 10000
-                  ? `${Math.floor(favoriteCount / 10000)}만`
-                  : favoriteCount}
+                {(favoriteCount ?? 0) >= 10000
+                  ? `${Math.floor((favoriteCount ?? 0) / 10000)}만`
+                  : favoriteCount ?? 0}
               </span>
             </div>
           </div>
@@ -225,7 +227,7 @@ const StoreDetailCard: React.FC<StoreDetailCardProps> = ({
                   e.stopPropagation();
                 }}
               >
-                <span>{benefits.grade}</span>
+                <span>{benefits?.grade || ''}</span>
               </div>
               <div
                 className="bg-yellow-50 px-3 py-1 rounded-tr rounded-br text-sm flex-1 min-w-0"
@@ -251,14 +253,14 @@ const StoreDetailCard: React.FC<StoreDetailCardProps> = ({
                     }}
                   >
                     {expandedSections.benefits
-                      ? benefits.benefitText
+                      ? benefits?.benefitText || ''
                       : getTruncatedText(
-                          benefits.benefitText,
+                          benefits?.benefitText,
                           TEXT_LIMITS.benefits
                         )}
                   </span>
                   {shouldShowExpand(
-                    benefits.benefitText,
+                    benefits?.benefitText,
                     TEXT_LIMITS.benefits
                   ) && (
                     <ExpandButton

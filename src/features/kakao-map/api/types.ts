@@ -11,20 +11,20 @@ export enum GRADE {
 }
 
 export interface StoreBenefit {
-  grade: GRADE;
-  benefitText: string;
+  grade: GRADE | null;
+  benefitText: string | null;
 }
 
 /**
  * 매장 상세 정보 타입 
  */
 export interface StoreDetail {
-  storeName: string;
+  storeName: string | null;
   isFavorite: boolean;
-  favoriteCount: number;
-  benefits: StoreBenefit;
-  usageLimit: string;
-  usageMethod: string;
+  favoriteCount: number | null;
+  benefits: StoreBenefit | null;
+  usageLimit: string | null;
+  usageMethod: string | null;
 }
 
 /**
