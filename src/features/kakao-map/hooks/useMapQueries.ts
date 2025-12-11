@@ -161,8 +161,8 @@ export const useToggleFavoriteMutation = () => {
               ...old.data,
               isFavorite: !old.data.isFavorite,
               favoriteCount: old.data.isFavorite
-                ? old.data.favoriteCount - 1
-                : old.data.favoriteCount + 1,
+                ? (old.data.favoriteCount ?? 0) - 1
+                : (old.data.favoriteCount ?? 0) + 1,
             },
           };
         }
