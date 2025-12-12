@@ -2,11 +2,12 @@ import { KakaoLoginButton } from '@/shared/components';
 import { useKakaoLogin } from '@/shared/hooks';
 import { useGA } from '@/shared/hooks/useGA';
 import { useModalStore } from '@/shared/store';
+import { DemoLoginButton } from '@/features/user/components/DemoLoginButton';
 
 import BaseModal from './BaseModal';
 
 const LoginModal = () => {
-  const { login } = useKakaoLogin();
+  const { login, adminLogin } = useKakaoLogin();
   const closeModal = useModalStore(state => state.closeModal);
   const { trackAuthInteraction } = useGA();
 
@@ -16,10 +17,6 @@ const LoginModal = () => {
     login();
   };
 
-  const handleCancel = () => {
-    trackAuthInteraction('login_modal_cancelled');
-    closeModal();
-  };
 
   interface FeatureItemProps {
     icon: React.ReactNode;
@@ -94,11 +91,14 @@ const LoginModal = () => {
             variant="full"
             className="w-full shadow-sm"
           />
+          <DemoLoginButton
+            className="text-sm text-gray hover:text-primary transition-colors h-auto py-2"
+          />
           <button
-            onClick={handleCancel}
-            className="text-primary/60 text-sm text-gray hover:text-primary transition-colors"
+            onClick={adminLogin}
+            className="text-xs text-gray-400 hover:text-gray-600 underline mt-2"
           >
-            일단 둘러볼게요
+            관리자 로그인 (Test)
           </button>
         </div>
       </div>
