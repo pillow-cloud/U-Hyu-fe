@@ -4,6 +4,7 @@ import { convertGrade } from '@mypage/constants/gradeUtils';
 import { MYPAGE_PATHS } from '@mypage/constants/paths';
 import type { UserInfoData } from '@mypage/api/types';
 import { ChevronRight } from 'lucide-react';
+import { FaUser } from 'react-icons/fa6';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 interface MyPageHeaderProps {
@@ -15,9 +16,11 @@ const MyPageHeader = ({ user }: MyPageHeaderProps) => {
   const location = useLocation();
 
   const [profileImage, setProfileImage] = useState<string>(user.profileImage);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     setProfileImage(user.profileImage);
+    setImageError(false); // Reset error when user changes
   }, [user.profileImage]);
 
   const previousUrlRef = useRef<string | null>(null);
@@ -55,11 +58,18 @@ const MyPageHeader = ({ user }: MyPageHeaderProps) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-[1rem]">
           <div className="relative">
-            <img
-              src={profileImage}
-              alt="프로필 이미지"
-              className="w-[4.5rem] h-[4.5rem] rounded-[0.75rem] bg-white object-cover"
-            />
+            {profileImage && !imageError ? (
+              <img
+                src={profileImage}
+                alt="프로필 이미지"
+                className="w-[4.5rem] h-[4.5rem] rounded-[0.75rem] bg-white object-cover"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <div className="w-[4.5rem] h-[4.5rem] rounded-[0.75rem] bg-white flex items-center justify-center border border-gray-100">
+                <FaUser className="w-8 h-8 text-gray-300" />
+              </div>
+            )}
           </div>
           <div className="flex flex-col justify-center gap-2 -mt-5">
             {user.grade && (

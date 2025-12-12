@@ -21,7 +21,7 @@ export const useCheckEmail = (email: string, enabled: boolean = false) => {
 
 export const useUserInfo = (enabled: boolean = true) => {
   return useQuery({
-    queryKey: ['userMe'],
+    queryKey: userKeys.info(),
     queryFn: userApi.getUserInfo,
     retry: (failureCount, error) => {
       if (error && typeof error === 'object' && 'response' in error) {

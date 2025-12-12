@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { PATH } from '@paths';
 import { LogoutButton } from '@user/components/LogoutButton';
 import { useUser } from '@user/store/userStore';
@@ -22,6 +23,7 @@ const LoggedInContent = () => {
   const user = useUser();
   const navigate = useNavigate();
   const { open } = useBarcodeStore();
+  const [imageError, setImageError] = useState(false);
 
   const menuItems: MenuItem[] = [
     {
@@ -64,12 +66,17 @@ const LoggedInContent = () => {
     <div className="space-y-4">
       <div className="rounded-2xl p-4 bg-white">
         <div className="flex items-center gap-4">
-          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md">
-            <img
-              src={user?.profileImage}
-              alt="프로필 이미지"
-              className="w-full h-full object-cover"
-            />
+          <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md bg-gray-50 flex items-center justify-center">
+            {user?.profileImage && !imageError ? (
+              <img
+                src={user.profileImage}
+                alt="프로필 이미지"
+                className="w-full h-full object-cover"
+                onError={() => setImageError(true)}
+              />
+            ) : (
+              <FaUser className="w-8 h-8 text-gray-300" />
+            )}
           </div>
           <div className="flex-1">
             <h3 className="text-lg font-bold">{user?.userName}님</h3>

@@ -5,6 +5,7 @@ import { HiGift } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 
 import { KakaoLoginButton } from '@/shared/components/buttons/KakaoLoginButton';
+import { DemoLoginButton } from '@/features/user/components/DemoLoginButton';
 import { SheetClose } from '@/shared/components/shadcn/ui/sheet';
 
 const LoggedOutContent = () => {
@@ -30,6 +31,7 @@ const LoggedOutContent = () => {
       {/* 로그인 안내 */}
       <div className="flex flex-col gap-2 text-center">
         <KakaoLoginButton className="w-full" />
+        <DemoLoginButton className="py-2 h-[48px]" />
       </div>
 
       <div className="space-y-2">

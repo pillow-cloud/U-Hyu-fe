@@ -64,4 +64,12 @@ export const userApi = {
       message: res.data.message,
     };
   },
+
+  demoLogin: async (): Promise<{ statusCode: number; message: string }> => {
+    const res = await client.post<ApiResponse>(USER_ENDPOINTS.GUEST.DEMO_LOGIN);
+    return {
+      statusCode: res.data.statusCode,
+      message: res.data.message,
+    };
+  },
 };
