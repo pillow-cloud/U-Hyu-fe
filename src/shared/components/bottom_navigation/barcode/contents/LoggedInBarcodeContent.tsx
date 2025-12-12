@@ -6,11 +6,12 @@ import { useNearbyStoreQuery } from '@barcode/hooks/useNearbyStoreQuery';
 import { ImageUp } from 'lucide-react';
 import { BeatLoader } from 'react-spinners';
 
-import { PrimaryButton } from '@/shared/components';
+
 import { BarcodeCropModal } from '@/shared/components/bottom_navigation/barcode/BarcodeCropModal';
 import { CroppedImg } from '@/shared/components/bottom_navigation/barcode/CroppedImg';
 import { useImageCropStore, useModalStore } from '@/shared/store';
 import { isApiError } from '@/shared/utils/isApiError';
+import { BarcodeRegistrationGuide } from './BarcodeRegistrationGuide';
 
 export const LoggedInBarcodeContent = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -97,9 +98,7 @@ export const LoggedInBarcodeContent = () => {
           </button>
         </div>
       ) : (
-        <PrimaryButton className="w-full" onClick={triggerFileSelect}>
-          바코드 업로드 하기
-        </PrimaryButton>
+        <BarcodeRegistrationGuide onRegister={triggerFileSelect} />
       )}
 
       <input

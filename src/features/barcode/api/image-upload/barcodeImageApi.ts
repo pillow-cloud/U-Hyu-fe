@@ -20,10 +20,12 @@ export const postUploadBarcodeImage = async (file: File): Promise<string> => {
   return res.data.data!;
 };
 
-export const getBarcodeImage = async (): Promise<string> => {
-  const res = await client.get<ApiResponse<string>>(BARCODE_ENDPOINTS.IMAGE);
+export const getBarcodeImage = async (): Promise<string | null> => {
+  const res = await client.get<ApiResponse<string | null>>(
+    BARCODE_ENDPOINTS.IMAGE
+  );
 
-  return res.data.data!;
+  return res.data.data ?? null;
 };
 
 export const patchBarcodeImage = async (file: File): Promise<string> => {
