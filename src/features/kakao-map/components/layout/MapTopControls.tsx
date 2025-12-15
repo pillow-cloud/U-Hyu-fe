@@ -39,7 +39,6 @@ const MapTopControls: FC<MapTopControlsProps> = ({
   onSearch,
   activeRegionFilter,
   onRegionFilterChange,
-  activeCategoryFilter,
   onCategoryFilterChange,
   onToggleBottomSheet,
   isBottomSheetOpen,

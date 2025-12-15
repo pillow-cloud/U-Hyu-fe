@@ -32,16 +32,6 @@ interface MapControlsContainerProps {
  * 검색, 필터 등 지도 상단의 모든 UI 컨트롤을 관리
  */
 export const MapControlsContainer: React.FC<MapControlsContainerProps> = ({
-  onKeywordSearchResults,
-  keywordResults = [],
-  onClearMarkers,
-  onCloseSearchResults,
-  mapCenterSetter,
-  onPlaceClick,
-  enableAutoSearch = true,
-  debounceDelay = Number(import.meta.env.VITE_SEARCH_DEBOUNCE_DELAY) || 500,
-  mapCenter,
-  onSearchResultItemClick,
   map,
 }) => {
   const {
@@ -89,7 +79,7 @@ export const MapControlsContainer: React.FC<MapControlsContainerProps> = ({
   }, [bottomSheetRef]);
 
   // Handler for analytics or additional side effects if needed when search is triggered
-  const handleSearch = (value: string) => {
+  const handleSearch = () => {
     // console.log('Search triggered:', value);
   };
 
