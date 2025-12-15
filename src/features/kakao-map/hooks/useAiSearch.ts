@@ -5,7 +5,6 @@ import { useMapUI } from './useMapUI';
 import { useMapStore } from '../store/MapStore';
 import { getZoomLevelByRadius } from '../utils/zoomUtils';
 import { queryToFilters } from '../api/aiSearchApi';
-import { getFilterCategoryForStore } from '../config/categoryMapping';
 
 export const useAiSearch = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -43,28 +42,20 @@ export const useAiSearch = () => {
       setZoomLevel(mappedZoomLevel);
 
       // 2. 필터 적용
-      // 카테고리 정합성 체크 및 매핑 (AI가 '카페'로 주면 '베이커리/디저트'로 변환 등)
-      let finalCategory = data.category;
-      if (finalCategory) {
-          const mapped = getFilterCategoryForStore(finalCategory);
-          // 매핑 결과가 'all'이고 원본이 'all'이 아니었다면, 매핑 실패로 간주할 수도 있으나
-          // getFilterCategoryForStore는 매핑 실패 시 'all'을 반환하므로 안전하게 'all' 사용
-          finalCategory = mapped;
-      }
-
-      // MapStore 업데이트 (데이터 필터링용)
+      // ID 기반 필터 적용
+      // 현재 프론트엔드에는 Category ID -> Tab Name 매핑 정보가 없으므로,
+      // 데이터 필터링(MapStore)만 적용하고 UI 탭 자동 활성화는 'all'로 유지하거나 추후 매핑 로직 추가 필요.
+      
       applyFilters({
-        category: finalCategory || undefined,
-        brand: data.brand || undefined,
+        categoryIds: data.categoryIds || undefined,
+        brandIds: data.brandIds || undefined,
       });
       
       // UI 업데이트 (탭 활성화용)
-      // 정규화된 카테고리를 설정하여 UI 탭이 정확히 활성화되도록 함
-      if (finalCategory && finalCategory !== 'all') {
-          setCategoryFilter(finalCategory);
-      } else {
-          setCategoryFilter('all'); 
-      }
+      // ID만으로는 어떤 탭인지 알 수 없으므로 우선 전체('all')로 설정하거나
+      // 향후 API 응답에 categoryName이 포함되면 그때 매핑 가능.
+      // 일단은 필터 적용 사실만 toast 등으로 인지 가능.
+      setCategoryFilter('all');
       
       
       // 검색 파라미터 업데이트로 재검색 트리거 (필요한 경우)

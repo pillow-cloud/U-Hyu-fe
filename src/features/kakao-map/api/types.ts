@@ -72,6 +72,10 @@ export interface GetNearbyStoresParams {
   category?: string;
   /** 브랜드 필터 (선택사항) */
   brand?: string;
+  /** 카테고리 ID 목록 필터 (AI 검색용) */
+  categoryIds?: number[];
+  /** 브랜드 ID 목록 필터 (AI 검색용) */
+  brandIds?: number[];
 }
 
 /**

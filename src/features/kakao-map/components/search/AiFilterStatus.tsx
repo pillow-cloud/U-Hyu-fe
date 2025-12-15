@@ -12,17 +12,34 @@ export const AiFilterStatus: React.FC = () => {
   // 여기선 일단 반경은 항상 표시하거나, AI 검색 흐름을 탔을 때 표시하는 플래그가 없으므로
   // 필터가 하나라도 있으면 반경도 같이 보여주는 식으로 처리.
   
-  const hasActiveFilters = currentFilters.brand || currentFilters.category;
+  const hasActiveFilters = 
+    currentFilters.brand || 
+    currentFilters.category ||
+    (currentFilters.brandIds && currentFilters.brandIds.length > 0) ||
+    (currentFilters.categoryIds && currentFilters.categoryIds.length > 0);
 
   if (!hasActiveFilters) return null;
 
   const handleRemoveBrand = () => {
-    applyFilters({ ...currentFilters, brand: undefined });
+    applyFilters({ ...currentFilters, brand: undefined, brandIds: undefined });
   };
 
   const handleRemoveCategory = () => {
-    applyFilters({ ...currentFilters, category: undefined });
+    applyFilters({ ...currentFilters, category: undefined, categoryIds: undefined });
   };
+  
+  // ID 기반 필터의 경우 이름을 알 수 없으므로 개수로 표시
+  const brandLabel = currentFilters.brand 
+    ? currentFilters.brand 
+    : (currentFilters.brandIds && currentFilters.brandIds.length > 0) 
+      ? `브랜드 ${currentFilters.brandIds.length}개` 
+      : null;
+
+  const categoryLabel = currentFilters.category 
+    ? currentFilters.category 
+    : (currentFilters.categoryIds && currentFilters.categoryIds.length > 0) 
+      ? `카테고리 ${currentFilters.categoryIds.length}개` 
+      : null;
 
   return (
     <div className="flex items-center gap-2 px-4 py-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
@@ -32,10 +49,10 @@ export const AiFilterStatus: React.FC = () => {
         </span>
       </div>
 
-      {currentFilters.brand && (
+      {brandLabel && (
         <div className="flex items-center gap-1 pl-3 pr-2 py-1 bg-brand-blue/10 rounded-full border border-brand-blue/20">
           <span className="text-xs font-semibold text-brand-blue">
-            {currentFilters.brand}
+            {brandLabel}
           </span>
           <button 
             onClick={handleRemoveBrand}
@@ -46,10 +63,10 @@ export const AiFilterStatus: React.FC = () => {
         </div>
       )}
 
-      {currentFilters.category && (
+      {categoryLabel && (
         <div className="flex items-center gap-1 pl-3 pr-2 py-1 bg-purple-50 rounded-full border border-purple-100">
           <span className="text-xs font-semibold text-purple-600">
-            {currentFilters.category}
+            {categoryLabel}
           </span>
           <button 
             onClick={handleRemoveCategory}

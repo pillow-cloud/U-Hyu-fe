@@ -26,10 +26,21 @@ export const mapApi = {
   getStoreList: async (
     params: GetNearbyStoresParams
   ): Promise<StoreListResponse> => {
+    // 배열 형태의 ID 목록을 쉼표로 구분된 문자열로 변환하여 전송
+    const queryParams: Record<string, any> = { ...params };
+
+    if (params.brandIds && params.brandIds.length > 0) {
+      queryParams.brandIds = params.brandIds.join(',');
+    }
+    
+    if (params.categoryIds && params.categoryIds.length > 0) {
+      queryParams.categoryIds = params.categoryIds.join(',');
+    }
+
     const response = await client.get<StoreListResponse>(
       MAP_ENDPOINTS.GET_NEARBY_STORES,
       {
-        params,
+        params: queryParams,
       }
     );
     return response.data;

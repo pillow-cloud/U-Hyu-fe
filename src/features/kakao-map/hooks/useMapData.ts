@@ -112,19 +112,34 @@ export const useMapData = () => {
     };
 
     // AI 검색 필터 우선 적용
-    if (currentFilters.category) {
-      baseParams.category = currentFilters.category;
-    } else {
-      const mappedCategory = mapCategoryToBackend(uiState.activeCategoryFilter);
-      if (mappedCategory) {
-        baseParams.category = mappedCategory;
-      }
-    }
+    // 1. 브랜드 필터 (우선순위 1)
+    const hasBrandFilter = 
+      (currentFilters.brandIds && currentFilters.brandIds.length > 0) ||
+      currentFilters.brand ||
+      (uiState.selectedBrand && uiState.selectedBrand !== '');
 
-    if (currentFilters.brand) {
+    if (currentFilters.brandIds && currentFilters.brandIds.length > 0) {
+      baseParams.brandIds = currentFilters.brandIds;
+    } else if (currentFilters.brand) {
       baseParams.brand = currentFilters.brand;
     } else if (uiState.selectedBrand && uiState.selectedBrand !== '') {
       baseParams.brand = uiState.selectedBrand;
+    }
+
+    // 2. 카테고리 필터 (브랜드 필터가 없을 때만 적용)
+    // 백엔드의 AND 로직으로 인해, 브랜드와 카테고리가 동시에 전송되면
+    // 교집합이 없을 경우(예: '카페' 카테고리 + 'CGV' 브랜드) 결과가 0건이 되는 문제 해결
+    if (!hasBrandFilter) {
+      if (currentFilters.categoryIds && currentFilters.categoryIds.length > 0) {
+        baseParams.categoryIds = currentFilters.categoryIds;
+      } else if (currentFilters.category) {
+        baseParams.category = currentFilters.category;
+      } else {
+        const mappedCategory = mapCategoryToBackend(uiState.activeCategoryFilter);
+        if (mappedCategory) {
+          baseParams.category = mappedCategory;
+        }
+      }
     }
 
     return baseParams;

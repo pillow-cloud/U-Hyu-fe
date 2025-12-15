@@ -58,6 +58,8 @@ export interface MapStoreState {
     brand?: string;
     region?: string;
     searchQuery?: string;
+    categoryIds?: number[];
+    brandIds?: number[];
   };
 
   bookmarkMode: boolean;
@@ -93,6 +95,8 @@ export interface MapStoreActions {
     brand?: string;
     region?: string;
     searchQuery?: string;
+    categoryIds?: number[];
+    brandIds?: number[];
   }) => void;
   getFilteredStores: () => Store[];
 

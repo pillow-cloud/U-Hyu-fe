@@ -3,9 +3,11 @@ import type { ApiResponse } from '@/shared/client/client.type';
 
 export interface AiSearchResponseData {
   radius: number;
-  category: string | null;
-  brand: string | null;
+  brandIds: number[];
+  categoryIds: number[];
+  unrecognizedFilters: string[];
   notes: string;
+  confidence: number;
   fallback: boolean;
 }
 
