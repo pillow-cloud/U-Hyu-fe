@@ -7,7 +7,7 @@ import { DemoLoginButton } from '@/features/user/components/DemoLoginButton';
 import BaseModal from './BaseModal';
 
 const LoginModal = () => {
-  const { login, adminLogin } = useKakaoLogin();
+  const { login } = useKakaoLogin();
   const closeModal = useModalStore(state => state.closeModal);
   const { trackAuthInteraction } = useGA();
 
@@ -94,12 +94,6 @@ const LoginModal = () => {
           <DemoLoginButton
             className="text-sm text-gray hover:text-primary transition-colors h-auto py-2"
           />
-          <button
-            onClick={adminLogin}
-            className="text-xs text-gray-400 hover:text-gray-600 underline mt-2"
-          >
-            관리자 로그인 (Test)
-          </button>
         </div>
       </div>
     </BaseModal>
