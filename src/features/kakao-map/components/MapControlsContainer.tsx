@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
@@ -65,7 +65,6 @@ export const MapControlsContainer: React.FC<MapControlsContainerProps> = ({
         activeRegionFilter={activeRegionFilter}
         onRegionFilterChange={handleRegionFilterChange}
         activeCategoryFilter={activeCategoryFilter}
-        onCategoryFilterChange={handleCategoryFilterChange}
         onCategoryFilterChange={handleCategoryFilterChange}
         map={map}
       />
