@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { MapControlsContainer as MapButtonsContainer } from '@kakao-map/components/controls/MapControlsContainer';
 import { useParams } from 'react-router-dom';
 
 import type { NormalizedPlace } from '../api/types';
-import { useMapUIContext } from '../context/MapUIContext';
 import { useMapUI } from '../hooks/useMapUI';
 import MapTopControls from './layout/MapTopControls';
 
@@ -44,39 +42,6 @@ export const MapControlsContainer: React.FC<MapControlsContainerProps> = ({
   // Legacy search logic Removed - using NaturalSearchInput with useAiSearch internal hook.
   // We keep the props interface of MapControlsContainer for compatibility with MapPage, but they might be unused.
   
-  const { bottomSheetRef } = useMapUIContext();
-  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-
-  const BOTTOM_SHEET_THRESHOLD = 300;
-
-  useEffect(() => {
-    const checkBottomSheetState = () => {
-      if (bottomSheetRef?.current) {
-        const currentPosition = bottomSheetRef.current.getCurrentPosition();
-        const isOpen = currentPosition < BOTTOM_SHEET_THRESHOLD;
-        setIsBottomSheetOpen(isOpen);
-      }
-    };
-
-    checkBottomSheetState();
-
-    const observer = new MutationObserver(() => {
-      setTimeout(checkBottomSheetState, 50);
-    });
-
-    if (bottomSheetRef?.current) {
-      observer.observe(document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['style', 'class'],
-      });
-    }
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [bottomSheetRef]);
 
   // Handler for analytics or additional side effects if needed when search is triggered
   const handleSearch = () => {
@@ -90,13 +55,6 @@ export const MapControlsContainer: React.FC<MapControlsContainerProps> = ({
   const handleCategoryFilterChange = (category: string) => {
     setCategoryFilter(category);
   };
-
-  const handleToggleBottomSheet = () => {
-    if (bottomSheetRef && bottomSheetRef.current) {
-      bottomSheetRef.current.toggle();
-    }
-  };
-
   const { uuid } = useParams();
   const isShared = !!uuid;
 
@@ -108,11 +66,9 @@ export const MapControlsContainer: React.FC<MapControlsContainerProps> = ({
         onRegionFilterChange={handleRegionFilterChange}
         activeCategoryFilter={activeCategoryFilter}
         onCategoryFilterChange={handleCategoryFilterChange}
-        onToggleBottomSheet={handleToggleBottomSheet}
-        isBottomSheetOpen={isBottomSheetOpen}
+        onCategoryFilterChange={handleCategoryFilterChange}
         map={map}
       />
-      <MapButtonsContainer hideWhenSearching={false} />
     </div>
   );
 };

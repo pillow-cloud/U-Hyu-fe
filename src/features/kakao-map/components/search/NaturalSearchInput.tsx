@@ -8,10 +8,10 @@ interface NaturalSearchInputProps {
 }
 
 const PLACEHOLDERS = [
-  "원하는 대로 검색해보세요 (스벅 -> 스타벅스)",
-  "가까운 스타벅스 찾아줘",
-  "500m 내 편의점 보여줘",
-  "조용한 카페 추천해줘",
+  "원하는 대로 검색해보세요 (베라 -> 배스킨라빈스)",
+  "가까운 배스킨라빈스 찾아줘",
+  "1km 내 편의점 보여줘",
+  "가까운 카페 추천해줘",
   "주차 가능한 맛집"
 ];
 
@@ -52,6 +52,23 @@ export const NaturalSearchInput: React.FC<NaturalSearchInputProps> = ({
     inputRef.current?.focus();
   };
 
+  // Click Outside Handler
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (inputRef.current && !inputRef.current.parentElement?.contains(event.target as Node)) {
+        if (isFocused) {
+          inputRef.current.blur();
+          setIsFocused(false);
+        }
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isFocused]);
+
   return (
     <div className={`relative w-full ${className}`}>
       <div 
@@ -80,7 +97,7 @@ export const NaturalSearchInput: React.FC<NaturalSearchInputProps> = ({
           onBlur={() => setIsFocused(false)}
           placeholder={isFocused ? "원하시는 조건(브랜드, 거리 등)을 자유롭게 입력해보세요" : PLACEHOLDERS[placeholderIndex]}
           disabled={isLoading}
-          className="flex-1 bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-sm text-gray-800 placeholder-gray-400 px-1 truncate"
+          className="flex-1 bg-transparent border-none outline-none focus:outline-none focus:ring-0 text-gray-800 placeholder-gray-400 px-1 truncate h-full"
         />
 
         {/* Clear / Search Button */}

@@ -4,7 +4,7 @@ import { FILTER_TABS } from '@/shared/components/filter_tabs/FilterTabs.variants
 
 export const AiFilterStatus: React.FC = () => {
   const currentFilters = useMapStore((state) => state.currentFilters);
-  const searchRadius = useMapStore((state) => state.searchRadius);
+
   const stores = useMapStore((state) => state.stores);
   const applyFilters = useMapStore((state) => state.applyFilters);
 
@@ -110,11 +110,7 @@ export const AiFilterStatus: React.FC = () => {
 
   return (
     <div className="flex items-center gap-2 px-4 py-2 overflow-x-auto whitespace-nowrap scrollbar-hide">
-      <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-900/5 backdrop-blur-sm rounded-full border border-gray-200 shadow-sm">
-        <span className="text-xs font-medium text-gray-600">
-           반경 {searchRadius >= 1000 ? `${searchRadius / 1000}km` : `${searchRadius}m`}
-        </span>
-      </div>
+
 
       {brandLabel && (
         <div className="flex items-center gap-1.5 pl-1.5 pr-2 py-1 bg-white rounded-full border border-brand-blue/30 shadow-sm">
@@ -143,11 +139,7 @@ export const AiFilterStatus: React.FC = () => {
 
       {categoryLabel && (
         <div 
-            className="flex items-center gap-1 pl-3 pr-2 py-1 rounded-full border shadow-sm transition-colors"
-            style={{
-                backgroundColor: categoryStyle.backgroundColor,
-                borderColor: categoryStyle.borderColor,
-            }}
+            className="flex items-center gap-1 pl-3 pr-2 py-1 rounded-full border border-gray-200/50 bg-white shadow-sm transition-colors"
         >
           <span 
             className="text-xs font-semibold"
@@ -157,7 +149,7 @@ export const AiFilterStatus: React.FC = () => {
           </span>
           <button 
             onClick={handleRemoveCategory}
-            className="p-0.5 rounded-full hover:bg-black/5"
+            className="p-0.5 rounded-full hover:bg-gray-100"
             style={{ color: categoryStyle.color }}
           >
             <XMarkIcon className="w-3.5 h-3.5" />

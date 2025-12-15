@@ -1,13 +1,13 @@
 import { type FC, useRef } from 'react';
 
-import RegionFilterDropdown from '@kakao-map/components/layout/RegionFilterDropdown';
+import { MapMenuDropdown } from './MapMenuDropdown';
 
 import { FilterTabs } from '@/shared/components';
 
 import { MapZoomLevelIndicator } from '../controls/MapZoomLevelIndicator';
 import { NaturalSearchInput } from '../search/NaturalSearchInput';
 import { AiFilterStatus } from '../search/AiFilterStatus';
-import BottomSheetToggleButton from './BottomSheetToggleButton';
+
 
 /**
  * MapTopControls 컴포넌트의 Props 인터페이스
@@ -23,10 +23,6 @@ interface MapTopControlsProps {
   activeCategoryFilter: string;
   /** 카테고리 필터 변경 핸들러 */
   onCategoryFilterChange: (value: string) => void;
-  /** 바텀시트 토글 핸들러 */
-  onToggleBottomSheet: () => void;
-  /** 바텀시트 열림/닫힘 상태 */
-  isBottomSheetOpen: boolean;
   map?: kakao.maps.Map | null;
 }
 
@@ -40,8 +36,6 @@ const MapTopControls: FC<MapTopControlsProps> = ({
   activeRegionFilter,
   onRegionFilterChange,
   onCategoryFilterChange,
-  onToggleBottomSheet,
-  isBottomSheetOpen,
   map,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,25 +44,18 @@ const MapTopControls: FC<MapTopControlsProps> = ({
       ref={containerRef}
       className="absolute top-4 left-14 right-4 z-10 space-y-0.5 pointer-events-none"
     >
-      <div className="absolute top-0 right-0 z-20 pointer-events-auto">
-        <BottomSheetToggleButton
-          isOpen={isBottomSheetOpen}
-          onToggle={onToggleBottomSheet}
-        />
-      </div>
-
-      <div className="flex items-stretch gap-1 ml-0 mr-[40px] pointer-events-auto relative">
-        <div className="flex-1 h-[36px]">
+      <div className="flex items-center gap-2 px-0 mb-1 pointer-events-auto relative z-20">
+        <div className="flex-1 h-10">
           <NaturalSearchInput
             onSearch={onSearch}
-            className="z-10"
+            className="z-10 shadow-sm h-full"
           />
         </div>
 
-        <div className="flex-shrink-0 h-[36px]">
-          <RegionFilterDropdown
-            value={activeRegionFilter}
-            onChange={onRegionFilterChange}
+        <div className="flex-shrink-0">
+          <MapMenuDropdown
+            activeRegionFilter={activeRegionFilter}
+            onRegionFilterChange={onRegionFilterChange}
           />
         </div>
       </div>
