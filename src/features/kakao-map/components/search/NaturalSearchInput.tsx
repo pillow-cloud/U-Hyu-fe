@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { SparklesIcon, XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+
+import { useModalStore } from '@/shared/store';
+import { useIsLoggedIn } from '@/shared/store/userStore';
 import { useAiSearch } from '../../hooks/useAiSearch';
 
 interface NaturalSearchInputProps {
@@ -23,7 +26,11 @@ export const NaturalSearchInput: React.FC<NaturalSearchInputProps> = ({
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [isFocused, setIsFocused] = useState(false);
   const { isLoading, handleAiSearch } = useAiSearch();
+
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const isLoggedIn = useIsLoggedIn();
+  const openModal = useModalStore(state => state.openModal);
 
   // Placeholder Rolling Effect
   useEffect(() => {
@@ -39,7 +46,12 @@ export const NaturalSearchInput: React.FC<NaturalSearchInputProps> = ({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
+
       if (value.trim() && !isLoading) {
+        if (!isLoggedIn) {
+          openModal('login');
+          return;
+        }
         handleAiSearch(value.trim());
         onSearch?.(value.trim());
         inputRef.current?.blur();
@@ -113,6 +125,10 @@ export const NaturalSearchInput: React.FC<NaturalSearchInputProps> = ({
           <button
              onClick={() => {
                 if(value.trim() && !isLoading) {
+                    if (!isLoggedIn) {
+                        openModal('login');
+                        return;
+                    }
                     handleAiSearch(value.trim());
                     onSearch?.(value.trim());
                 }
