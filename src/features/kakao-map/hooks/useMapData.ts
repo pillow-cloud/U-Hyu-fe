@@ -98,6 +98,8 @@ export const useMapData = () => {
   const searchParams = useMapStore(state => state.searchParams);
   const setSearchParams = useMapStore(state => state.setSearchParams);
 
+  const currentFilters = useMapStore(state => state.currentFilters);
+
   /**
    * 백엔드 API 호출을 위한 쿼리 파라미터 생성
    * 재검색 버튼 클릭시에만 업데이트되는 searchParams 사용
@@ -109,19 +111,26 @@ export const useMapData = () => {
       radius: searchParams?.radius ?? dynamicSearchRadius,
     };
 
-    const mappedCategory = mapCategoryToBackend(uiState.activeCategoryFilter);
-    if (mappedCategory) {
-      baseParams.category = mappedCategory;
+    // AI 검색 필터 우선 적용
+    if (currentFilters.category) {
+      baseParams.category = currentFilters.category;
+    } else {
+      const mappedCategory = mapCategoryToBackend(uiState.activeCategoryFilter);
+      if (mappedCategory) {
+        baseParams.category = mappedCategory;
+      }
     }
 
-    if (uiState.selectedBrand && uiState.selectedBrand !== '') {
+    if (currentFilters.brand) {
+      baseParams.brand = currentFilters.brand;
+    } else if (uiState.selectedBrand && uiState.selectedBrand !== '') {
       baseParams.brand = uiState.selectedBrand;
     }
 
     return baseParams;
   }, [
     searchParams?.lat,
-    searchParams?.lng, 
+    searchParams?.lng,
     searchParams?.radius,
     mapCenter.lat,
     mapCenter.lng,
@@ -129,6 +138,7 @@ export const useMapData = () => {
     uiState.activeCategoryFilter,
     uiState.selectedBrand,
     mapCategoryToBackend,
+    currentFilters,
   ]);
 
   const storeListQuery = useStoreListQuery(storeListParams);

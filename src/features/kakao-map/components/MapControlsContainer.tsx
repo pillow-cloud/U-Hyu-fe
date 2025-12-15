@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 
 import type { NormalizedPlace } from '../api/types';
 import { useMapUIContext } from '../context/MapUIContext';
-import { useKeywordSearch } from '../hooks/useKeywordSearch';
 import { useMapUI } from '../hooks/useMapUI';
 import MapTopControls from './layout/MapTopControls';
 
@@ -46,47 +45,18 @@ export const MapControlsContainer: React.FC<MapControlsContainerProps> = ({
   map,
 }) => {
   const {
-    searchValue,
-    setSearchValue,
-    setSearchFocused,
     activeRegionFilter,
     setRegionFilter,
     setCategoryFilter,
     activeCategoryFilter,
   } = useMapUI();
-  const {
-    keyword,
-    results,
-    loading,
-    meta,
-    hasSearched,
-    selectedPlace,
-    setKeyword,
-    search,
-    selectPlace,
-    clearResults,
-    clearError,
-    hideSearchResults,
-  } = useKeywordSearch({
-    autoSearchEnabled: enableAutoSearch,
-    debounceDelay,
-    mapCenter,
-    searchRadius: 5000,
-  });
 
+  // Legacy search logic Removed - using NaturalSearchInput with useAiSearch internal hook.
+  // We keep the props interface of MapControlsContainer for compatibility with MapPage, but they might be unused.
+  
   const { bottomSheetRef } = useMapUIContext();
-
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-  useEffect(() => {
-    if (searchValue !== keyword) {
-      setKeyword(searchValue);
-    }
-  }, [searchValue, keyword, setKeyword]);
-  useEffect(() => {
-    if (onKeywordSearchResults) {
-      onKeywordSearchResults(results);
-    }
-  }, [results, onKeywordSearchResults]);
+
   const BOTTOM_SHEET_THRESHOLD = 300;
 
   useEffect(() => {
@@ -118,39 +88,9 @@ export const MapControlsContainer: React.FC<MapControlsContainerProps> = ({
     };
   }, [bottomSheetRef]);
 
-  const handleSearch = async (value: string) => {
-    if (value.trim()) {
-      try {
-        await search(value.trim());
-      } catch {
-        // 에러는 상위 컴포넌트에서 처리됨
-      }
-    }
-  };
-
-  const handleSearchValueChange = (value: string) => {
-    setSearchValue(value);
-    setKeyword(value);
-  };
-
-  const handleSearchCancel = () => {
-    setSearchValue('');
-    setKeyword('');
-    setSearchFocused(false);
-    clearResults();
-    clearError();
-    onClearMarkers?.();
-  };
-
-  const handleCloseSearchResults = () => {
-    clearResults();
-    clearError();
-    onCloseSearchResults?.();
-  };
-
-  const handleCloseSearchResultsForItemClick = () => {
-    onCloseSearchResults?.();
-    hideSearchResults();
+  // Handler for analytics or additional side effects if needed when search is triggered
+  const handleSearch = (value: string) => {
+    // console.log('Search triggered:', value);
   };
 
   const handleRegionFilterChange = (region: string) => {
@@ -166,29 +106,6 @@ export const MapControlsContainer: React.FC<MapControlsContainerProps> = ({
       bottomSheetRef.current.toggle();
     }
   };
-  const handleSearchResultClick = (place: NormalizedPlace) => {
-    if (onSearchResultItemClick) {
-      onSearchResultItemClick(place);
-    } else {
-      handleCloseSearchResultsForItemClick();
-      onPlaceClick?.(place);
-    }
-
-    selectPlace(place);
-
-    if (mapCenterSetter) {
-      const offset = 0.0017;
-      const targetLat = place.latitude + offset;
-      const targetLng = place.longitude;
-
-      mapCenterSetter({
-        lat: targetLat,
-        lng: targetLng,
-      });
-    }
-
-    clearError();
-  };
 
   const { uuid } = useParams();
   const isShared = !!uuid;
@@ -196,26 +113,16 @@ export const MapControlsContainer: React.FC<MapControlsContainerProps> = ({
   return isShared ? null : (
     <div>
       <MapTopControls
-        searchValue={searchValue}
-        onSearchValueChange={handleSearchValueChange}
         onSearch={handleSearch}
-        onSearchCancel={handleSearchCancel}
         activeRegionFilter={activeRegionFilter}
         onRegionFilterChange={handleRegionFilterChange}
         activeCategoryFilter={activeCategoryFilter}
         onCategoryFilterChange={handleCategoryFilterChange}
         onToggleBottomSheet={handleToggleBottomSheet}
         isBottomSheetOpen={isBottomSheetOpen}
-        keywordResults={keywordResults}
-        isSearching={loading}
-        selectedPlace={selectedPlace}
-        onSearchResultClick={handleSearchResultClick}
-        onCloseSearchResults={handleCloseSearchResults}
-        searchMeta={meta}
-        hasSearched={hasSearched}
         map={map}
       />
-      <MapButtonsContainer hideWhenSearching={keywordResults.length > 0} />
+      <MapButtonsContainer hideWhenSearching={false} />
     </div>
   );
 };
