@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { SparklesIcon, XMarkIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 
 import { useModalStore } from '@/shared/store';
-import { useIsLoggedIn } from '@/shared/store/userStore';
+import { useIsLoggedIn } from '@user/store/userStore';
 import { useAiSearch } from '../../hooks/useAiSearch';
 
 interface NaturalSearchInputProps {
